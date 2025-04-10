@@ -108,7 +108,7 @@
   </div>
 
   <div class="container">
-    <form>
+    <form id="orderForm">
       <label for="name">Enter your Name:</label><br>
       <input type="text" id="name" name="name"><br><br>
 
@@ -124,6 +124,7 @@
 
       <label for="delivery">Choose the mode of delivery:</label><br>
       <select id="delivery" name="delivery">
+        <option value="">--Select--</option>
         <option value="same_day">Same day (after 3 hours)</option>
         <option value="next_day">Next day afternoon</option>
         <option value="next_week">Same day next week</option>
@@ -142,19 +143,33 @@
   </div>
 
   <script>
-    const orderTotalInput = document.getElementById("orderTotal");
+    const form = document.getElementById("orderForm");
     const discountInfo = document.getElementById("discountInfo");
 
-    orderTotalInput.addEventListener("input", function () {
-      const total = parseFloat(orderTotalInput.value);
-      if (total > 100) {
+    form.addEventListener("input", checkEligibility);
+
+    function checkEligibility() {
+      const name = document.getElementById("name").value.trim();
+      const tastes = document.querySelectorAll('input[name="taste"]:checked');
+      const size = document.querySelector('input[name="size"]:checked');
+      const delivery = document.getElementById("delivery").value;
+      const total = parseFloat(document.getElementById("orderTotal").value);
+
+      if (
+        name &&
+        tastes.length > 0 &&
+        size &&
+        delivery &&
+        !isNaN(total) &&
+        total > 100
+      ) {
         const discount = total * 0.15;
         const finalAmount = total - discount;
         discountInfo.textContent = `You're eligible for a 15% discount! You save £${discount.toFixed(2)}. Final amount: £${finalAmount.toFixed(2)}`;
       } else {
         discountInfo.textContent = "";
       }
-    });
+    }
   </script>
 
 </body>
