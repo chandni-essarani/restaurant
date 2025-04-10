@@ -64,6 +64,7 @@
 
     .media-section {
       margin: 30px auto;
+      text-align: center;
     }
 
     .media-section img {
@@ -75,6 +76,11 @@
       width: 200px;
       margin-top: 20px;
       border-radius: 10px;
+    }
+
+    #discountInfo {
+      color: green;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -123,12 +129,33 @@
         <option value="next_week">Same day next week</option>
       </select><br><br>
 
+      <label for="orderTotal">Enter total order amount (£):</label><br>
+      <input type="number" id="orderTotal" name="orderTotal" min="0"><br><br>
+
+      <p id="discountInfo"></p>
+
       <button type="submit">Submit</button>
     </form>
 
     <br>
     <button onclick="window.open('https://www.youtube.com', '_blank')">Go to YouTube</button>
   </div>
+
+  <script>
+    const orderTotalInput = document.getElementById("orderTotal");
+    const discountInfo = document.getElementById("discountInfo");
+
+    orderTotalInput.addEventListener("input", function () {
+      const total = parseFloat(orderTotalInput.value);
+      if (total > 100) {
+        const discount = total * 0.15;
+        const finalAmount = total - discount;
+        discountInfo.textContent = `You're eligible for a 15% discount! You save £${discount.toFixed(2)}. Final amount: £${finalAmount.toFixed(2)}`;
+      } else {
+        discountInfo.textContent = "";
+      }
+    });
+  </script>
 
 </body>
 </html>
